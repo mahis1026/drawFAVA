@@ -3,8 +3,9 @@ services:
       image: nben/drawfava:latest
       ports:
          - "127.0.0.1:${DRAWFAVA_PORT:-8181}:${DRAWFAVA_PORT:-8181}"
+      hostname: localhost
       environment:
-        NB_UID: "${UID}"
+        NB_UID: "${UID:-1000}:${GID:-1000}"
         CHOWN_HOME: "yes"
         JUPYTER_TOKEN: ""
         JUPYTER_PORT: "${DRAWFAVA_PORT:-8181}"
@@ -13,4 +14,5 @@ services:
          - ${PWD}/annotations:/save:rw
          - ${PWD}/cache:/cache:rw
          - ${PWD}/.git:/git:r
-      command: --NotebookApp.token='' --NotebookApp.password=''
+         - ${PWD}/config:/config:r
+      command: --NotebookApp.token='' --NotebookApp.password='' --ip='0.0.0.0'
